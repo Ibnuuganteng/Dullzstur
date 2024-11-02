@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dullz Store</title>
+    <link rel="icon" href="https://files.catbox.moe/2tvtjo.jpg" type="image/jpeg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://files.catbox.moe/95xjh7.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            background: rgba(51, 51, 51, 0.8);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease; 
+        }
+
+        .clock {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #BF0426;
+        }
+
+        #products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .product-card {
+            flex: 1 1 calc(33.33% - 30px);
+            margin: 15px;
+            max-width: 300px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .btn {
+            padding: 1.1em 2em;
+            background: none;
+            border: 2px solid #fff;
+            font-size: 15px;
+            color: #131313;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            border-radius: 12px;
+            background-color: #ecd448;
+            font-weight: bolder;
+            box-shadow: 0 2px 0 2px #000;
+        }
+
+        .btn:before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 120%;
+            background-color: #ff6700;
+            top: 50%;
+            transform: skewX(30deg) translate(-150%, -50%);
+            transition: all 0.5s;
+        }
+
+        .btn:hover {
+            background-color: #4cc9f0;
+            color: #fff;
+            box-shadow: 0 2px 0 2px #0d3b66;
+        }
+
+        .btn:hover::before {
+            transform: skewX(30deg) translate(150%, -50%);
+            transition-delay: 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background: #333;
+            color: white;
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        #contact {
+            text-align: center;
+        }
+
+        /* Cookie Notice Styles */
+        .cookie-card {
+            max-width: 320px;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 20px 20px 30px rgba(0, 0, 0, .05);
+            position: fixed;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust position */
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .title {
+            font-weight: 600;
+            color: rgb(31 41 55);
+        }
+
+        .description {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: rgb(75 85 99);
+            text-align: center;
+        }
+
+        .description a {
+            color: rgb(59 130 246);
+        }
+
+        .description a:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            column-gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .pref {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            color: rgb(31 41 55);
+            text-decoration: underline;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            background-color: transparent;
+        }
+
+        .pref:hover {
+            color: rgb(156 163 175);
+        }
+
+        .accept {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            background-color: rgb(17 24 39);
+            font-weight: 500;
+            border-radius: 0.5rem;
+            color: #fff;
+            padding: 0.625rem 1rem;
+            border: none;
+            transition: all .15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accept:hover {
+            background-color: rgb(55 65 81);
+        }
+
+        @media (max-width: 768px) {
+            .product-card {
+                flex: 1 1 calc(50% - 30px);
+            }
+            .cookie-card {
+                width: 90%;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-card {
+                flex: 1 1 100%;
+            }
+            .cookie-card {
+                width: 90%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="store-title">DULLZ STORE</h1>
+        <div class="clock" id="clock"></div>
+    </header>
+
+    <div class="cookie-card" id="cookie-notice">
+        <div class="title">Penggunaan Cookies</div>
+        <div class="description">
+            Situs ini menggunakan cookies untuk meningkatkan pengalaman Anda. 
+            <a href="#">Pelajari lebih lanjut</a>.
+        </div>
+        <div class="actions">
+            <button class="pref" onclick="acceptCookies()">Setujui</button>
+            <button class="accept" onclick="acceptCookies()">Tutup</button>
+        </div>
+    </div>
+
+    <main>
+        <section id="products">
+            <h2>produk jb dullz</h2>
+            <div class="product-card" data-name="Produk 1" id="product-1">
+                <img src="https://files.catbox.moe/ft1jel.jpg" alt="Produk 1">
+                <h3>Produk 1</h3>
+                <p>JASTEB/UNCHEK PREMIUM</p>
+                <button class="btn" onclick="addToCart('Produk 1')">Beli Sekarang</button>
+            </div>
+            <div class="product-card" data-name="Produk 2" id="product-2">
+                <img src="https://files.catbox.moe/du9fsn.jpeg" alt="Produk 2">
+                <h3>Produk 2</h3>
+                <p>PANEL RUN BOT WHATSAAPP PRIVAT / PUBLIC</p>
+                <button class="btn" onclick="addToCart('Produk 2')">Beli Sekarang</button>
+            </div>
+            <div class="product-card" data-name="Produk 3" id="product-3">
+                <img src="https://files.catbox.moe/zxusoy.jpg" alt="Produk 3">
+                <h3>Produk 3</h3>
+                <p>LIST NOKOS DULLZ STORE N NOKOS LAIN? CONTACT ME</p>
+                <button class="btn" onclick="addToCart('Produk 3')">Beli Sekarang</button>
+            </div>
+            <div class="product-card" data-name="Produk 4" id="product-4">
+                <img src="https://files.catbox.moe/b4eedp.jpg" alt="Produk 4">
+                <h3>Produk 4</h3>
+                <p>MURID BUG BY FREZARR X DULLZ</p>
+                <button class="btn" onclick="addToCart('Produk 4')">Beli Sekarang</button>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>be a smart buyer</h2>
+            <p>Klik tombol di bawah untuk bergabung ke grup jb dullz</p>
+            <a href="https://chat.whatsapp.com/Bnj4IVkxmek10UmiqtQaFt" class="whatsapp-button">
+                <button class="btn">Klik di sini!</button>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Dullz Store</p>
+    </footer>
+
+    <script>
+        function addToCart(productName) {
+            const message = `Saya ingin membeli produk: ${productName}`;
+            const phoneNumber = '6288973673196';
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        function acceptCookies() {
+            document.getElementById('cookie-notice').style.display = 'none';
+            // Optionally set a cookie here
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const storeTitle = document.getElementById('store-title');
+            storeTitle.style.opacity = 1; 
+            storeTitle.style.transform = 'translateY(0)';  
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, index * 300);
+            });
+        });
+    </script>
+</body>
+</html>
